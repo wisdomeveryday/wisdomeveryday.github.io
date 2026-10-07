@@ -299,3 +299,10 @@ dialog.cart-dlg{max-width:620px}
 .cart-dlg .row s{color:var(--muted);font-weight:400;margin-left:6px}
 .cart-dlg .btn-ghost{margin-top:8px}
 @media (max-width:640px){.cart-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* що далі */
+.next{list-style:none;counter-reset:x;margin:14px 0 14px;padding:14px 16px;border:1px solid var(--gold);border-radius:12px;background:rgba(191,155,77,.1)}
+.next li{counter-increment:x;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;margin:6px 0;color:var(--cream);font-size:15px;line-height:1.4}
+.next li:before{content:counter(x);width:28px;height:28px;border-radius:50%;background:var(--gold);color:var(--bg);font-weight:700;display:flex;align-items:center;justify-content:center}
+#doneClose{margin-top:16px}
+@media print{body.printing #doneClose{display:none!important}}

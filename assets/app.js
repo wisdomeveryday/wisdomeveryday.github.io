@@ -345,15 +345,18 @@
       var purpose = fmt(T.purpose, { no: o.invoice, date: o.date }), link = nbuLink(o.total, purpose);
       h += "<h2>" + esc(T.pTitle) + "</h2>" +
         '<div class="row"><span>' + esc(T.pSum) + "</span><span><b>" + money(o.total) + "</b></span></div>" +
+        '<ol class="next">' + T.nextSteps.map(function (s) { return "<li>" + esc(fmt(s, { email: o.email })) + "</li>"; }).join("") + "</ol>" +
         '<a class="btn btn-link" href="' + esc(link) + '" target="_blank" rel="noopener">' + esc(T.pOpen) + "</a>" +
         '<button class="btn btn-ghost" id="savePdf">' + esc(T.pSave) + "</button>" +
-        '<p class="note">' + esc(T.pOnly) + " " + esc(fmt(T.pAfter, { email: o.email })) + "</p>" +
-        invoiceHtml(o, purpose, link);
+        '<p class="note">' + esc(T.pOnly) + "</p>" +
+        invoiceHtml(o, purpose, link) +
+        '<button class="btn" id="doneClose">' + esc(T.close) + "</button>";
       $("dlg").className = "inv-dlg";
     } else {
       h += "<h2>" + esc(T.oTitle) + "</h2><p>" + esc(fmt(T.oText, { email: o.email, code: o.code })) + "</p>";
     }
     $("dlgBody").innerHTML = h;
+    if ($("doneClose")) $("doneClose").onclick = function () { $("dlg").close(); };
     if ($("savePdf")) $("savePdf").onclick = function () { document.body.classList.add("printing"); window.print(); document.body.classList.remove("printing"); };
   }
 
