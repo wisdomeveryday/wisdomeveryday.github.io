@@ -19,6 +19,10 @@
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function fmt(s, o) { return s.replace(/\{(\w+)\}/g, function (_, k) { return o[k]; }); }
   var PACKS = C.PACKS, MAXN = PACKS[PACKS.length - 1].n;
+  function needHint(n, next) {
+    var prev = PACKS.filter(function (x) { return x.n < n; }).pop();
+    return prev ? fmt(T.toPackOr, { k: next.n - n, n: next.n, r: n - prev.n, m: prev.n }) : fmt(T.toPack, { k: next.n - n, n: next.n });
+  }
   function packFor(n) { return PACKS.filter(function (p) { return p.n === n; })[0]; }
   function packPrice(p) { return lang === "ua" ? (C.PROMO_ON ? p.promo : p.uah) : 0; }
   function packHtml() {
@@ -197,9 +201,31 @@
     $("bar").hidden = n === 0;
     $("barCount").textContent = T.picked + ": " + n + (p && packPrice(p) ? " · " + money(packPrice(p)) : "");
     $("barSub").textContent = msg ? msg : p ? (next ? fmt(T.orMore, { k: next.n - n, n: next.n, sum: packPrice(next) ? money(packPrice(next)) : "" }) : T.packReady) :
-      fmt(T.toPack, { k: next.n - n, n: next.n });
-    $("barBtn").textContent = T.checkout;
-    $("barBtn").disabled = !p;
+      needHint(n, next);
+    $("barBtn").textContent = T.cartBtn + " (" + n + ")";
+    $("barBtn").disabled = false;
+    if ($("dlg").open && $("dlg").className === "cart-dlg") renderCart();
+  }
+  function openCart() { $("dlg").className = "cart-dlg"; renderCart(); if (!$("dlg").open) $("dlg").showModal(); }
+  function renderCart() {
+    var nums = selected(), n = nums.length, p = packFor(n), next = PACKS.filter(function (x) { return x.n > n; })[0];
+    var hint = p ? (next ? fmt(T.orMore, { k: next.n - n, n: next.n, sum: packPrice(next) ? money(packPrice(next)) : "" }) : T.packReady)
+      : n ? needHint(n, next) : T.cartEmpty;
+    $("dlgBody").innerHTML = "<h2>" + esc(T.cartTitle) + "</h2>" +
+      '<div class="cart-list">' + nums.map(function (k) {
+        return '<div class="cart-item" data-n="' + k + '"><img src="' + img(k) + '" alt="" loading="lazy"><span>№ ' + k +
+          '</span><button class="cart-del" aria-label="' + esc(T.remove) + '">×</button></div>';
+      }).join("") + "</div>" +
+      '<p class="cart-hint">' + esc(hint) + "</p>" +
+      (p && packPrice(p) ? '<div class="row"><span>' + esc(T.cTotal) + "</span><span><b>" + money(packPrice(p)) + "</b>" +
+        (C.PROMO_ON && lang === "ua" ? " <s>" + money(p.uah) + "</s>" : "") + "</span></div>" : "") +
+      '<button class="btn" id="cartGo"' + (p ? "" : " disabled") + ">" + esc(T.checkout) + "</button>" +
+      '<button class="btn btn-ghost" id="cartMore">' + esc(T.cartMore) + "</button>";
+    $("cartGo").onclick = function () { openCheckout(false); };
+    $("cartMore").onclick = function () {
+      $("dlg").close();
+      if (PAGE !== "catalog") location.href = catUrl();
+    };
   }
   function toggle(n) {
     if (!sel[n] && selected().length >= MAXN) { renderBar(fmt(T.maxNote, { n: MAXN })); return; }
@@ -340,7 +366,11 @@
     var n = +card.getAttribute("data-n");
     if (e.target.closest(".add")) toggle(n); else if (e.target.closest(".img")) zoom(n);
   });
-  if ($("barBtn")) $("barBtn").addEventListener("click", function () { openCheckout(false); });
+  if ($("barBtn")) $("barBtn").addEventListener("click", openCart);
+  $("dlg").addEventListener("click", function (e) {
+    var d = e.target.closest(".cart-del");
+    if (d) toggle(+d.closest(".cart-item").getAttribute("data-n"));
+  });
   if (PAGE === "diary") ["dBuy", "dBuy2"].forEach(function (id) { $(id).addEventListener("click", function () { openCheckout(true); }); });
   window.addEventListener("hashchange", function () { var l = pickLang(); if (l !== lang) setLang(l); });
   setLang(pickLang());

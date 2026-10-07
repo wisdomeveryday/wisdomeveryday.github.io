@@ -288,3 +288,14 @@ dialog.inv-dlg{max-width:760px}
   body.printing #dlgBody>*:not(.inv),body.printing .dlg-close{display:none!important}
   body.printing .inv{margin:0;padding:0}
 }
+
+/* кошик */
+dialog.cart-dlg{max-width:620px}
+.cart-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 6px}
+.cart-item{position:relative;text-align:center;font-size:13px;color:var(--soft)}
+.cart-item img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:3px;background:#f6f1e6;margin-bottom:4px}
+.cart-del{position:absolute;top:-8px;right:-8px;width:28px;height:28px;border-radius:50%;border:0;background:var(--red);color:#fff;font-size:20px;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.cart-hint{color:var(--gold2);font-size:14px;margin:12px 0 4px}
+.cart-dlg .row s{color:var(--muted);font-weight:400;margin-left:6px}
+.cart-dlg .btn-ghost{margin-top:8px}
+@media (max-width:640px){.cart-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
