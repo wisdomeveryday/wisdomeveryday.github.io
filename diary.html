@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Каталог карток — Wisdom Everyday</title>
-<meta name="description" content="Картки мудрості для друку 10×15 см: JPG + PDF, 300 dpi. 6 мов.">
+<title>Щоденник мудрості — Wisdom Everyday</title>
+<meta name="description" content="Щоденник мудрості на 30 днів: PDF для друку і для планшета, без дат.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#1c140d">
 <link rel="icon" href="assets/favicon.png">
@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 </head>
-<body data-page="catalog">
+<body data-page="diary">
 <header class="top">
   <div class="wrap top-in">
     <a class="logo" id="logoLink" href="index.html">
@@ -26,16 +26,44 @@
   </div>
 </header>
 <main>
-  <section class="hero hero-small">
-    <div class="wrap cat-head">
-      <h1 id="catTitle"></h1>
-      <p id="catLead"></p>
-      <div id="catPacks"></div>
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div class="hero-txt">
+        <p class="kicker" id="kicker"></p>
+        <h1 id="dTitle"></h1>
+        <p class="hero-sub" id="dLead"></p>
+        <p class="d-price" id="dPrice"></p>
+        <button class="btn btn-big" id="dBuy"></button>
+        <ul class="meta" id="dMeta"></ul>
+      </div>
+      <div class="fan fan-diary" id="dFan"></div>
     </div>
   </section>
-  <nav class="cats" id="cats"></nav>
-  <section class="wrap">
-    <div class="grid" id="grid"></div>
+
+  <section class="sec">
+    <div class="wrap">
+      <h2 class="h2" id="dPageTitle"></h2>
+      <div class="d-page">
+        <img id="dPageImg" alt="" loading="lazy" width="745" height="1054">
+        <ol class="d-parts" id="dParts"></ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-alt">
+    <div class="wrap">
+      <h2 class="h2" id="dVerTitle"></h2>
+      <div class="d-vers" id="dVers"></div>
+      <div class="specs" id="dSpecs"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <h2 class="h2" id="dPaperTitle"></h2>
+      <ol class="steps steps3" id="dPaper"></ol>
+      <p class="center d-again"><button class="btn btn-big" id="dBuy2"></button></p>
+    </div>
   </section>
 </main>
 <footer class="foot">
